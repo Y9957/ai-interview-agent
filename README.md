@@ -50,6 +50,8 @@
 
 ## 🧩 폴더 구조
 
+## 🧩 폴더 구조
+
 ```bash
 ai-interview-agent/
  └── src/
@@ -64,36 +66,43 @@ ai-interview-agent/
       └── ui/                # (추후) Gradio UI 모듈
 ```
 
-⚙️ 실행 방법 
+---
 
-👉 아직 모듈로 완전히 나누지 않았기 때문에,
+## ⚙️ 실행 방법 
+
+👉 아직 모듈로 완전히 나누지 않았기 때문에,  
 v2 스크립트를 직접 실행하는 방식으로 사용합니다.
 
-1) 환경 변수 설정
+### 1) 환경 변수 설정
+```bash
 export OPENAI_API_KEY="api_key"
+```
 
 Windows PowerShell:
+```powershell
 setx OPENAI_API_KEY "api_key"
+```
 
-2) 패키지 설치
+### 2) 패키지 설치
+```bash
 pip install -r requirements.txt
+```
 
-3) v2 Agent 실행
+### 3) v2 Agent 실행
+```bash
 python src/graph/agent_v2.py
+```
 
-🧠 버전 설명
+---
 
-agent_v1.py : 기본적인 면접 플로우(질문 → 답변 → 평가)를 구현한 1차 버전
+## 🧠 버전 설명
 
-agent_v2.py :
+**agent_v1.py**  
+- 기본적인 면접 플로우(질문 → 답변 → 평가)를 구현한 1차 버전
 
-전략별 질문 강화
-
-Reflection(답변 피드백) 추가
-
-인터뷰 종료 조건 개선
-
-Gradio UI 연결 등의 기능이 추가된 고도화 버전
-
-
-
+**agent_v2.py**  
+- 전략별 질문 강화  
+- Reflection(답변 피드백) 추가  
+- 인터뷰 종료 조건 개선  
+- Gradio UI 연결  
+- 전체적으로 고도화된 버전

@@ -1,77 +1,76 @@
-# ai-interview-agent
-
-# 📘 AI Interview Agent
+# 🤖 AI Interview Agent
 
 이 프로젝트는 OpenAI 기반 LLM과 LangGraph를 활용하여  
-**이력서 분석 → 질문 전략 생성 → 질문/답변 평가 → 심화 질문 → 최종 피드백 리포트**까지  
-면접 전 과정을 자동화한 **AI 면접관 Agent**입니다.
+**이력서 분석 → 질문 전략 생성 → 질문/답변 평가 → Reflection → 심화 질문 → 최종 피드백 리포트**까지  
+면접 전 과정을 자동화한 **AI 면접관 Agent(v2.0)** 입니다.
 
 ---
 
 ## 🚀 주요 기능
 
 ### ✔ 1. 이력서 분석 & 요약
-- 지원자의 이력서 텍스트를 입력받아 핵심 경력/기술을 요약
-- 키워드 추출 및 질문 전략 수립에 활용
+- PDF/DOCX 이력서를 입력받아 텍스트 추출
+- 핵심 경력/기술 요약
+- 키워드 및 섹션 분류 생성
 
 ### ✔ 2. 질문 전략 생성
-- 지원 직무/경력/기술 스택에 따라
-  - 기본 질문
-  - 경험 중심 질문
-  - 기술 심화 질문
-  - 가치관/태도 질문
-- 등의 **질문 전략 세트**를 생성
+- 생성된 요약/키워드를 기반으로 5개 전략 자동 생성  
+  (경력/경험, 동기/커뮤니케이션, 논리적 사고, 기술 역량, 성장 가능성)
 
 ### ✔ 3. 질문 & 답변 평가
-- 전략에 따라 질문을 순차적으로 생성
-- 사용자의 답변을 받아:
-  - 이해도 / 경험 깊이 / 논리성 / 태도 등을 평가
-  - 점수 및 간단 피드백 생성
+- 답변의 **연관성/구체성**을 LLM으로 평가  
+- 평가 결과는 ‘상/중/하’로 기록
 
-### ✔ 4. 리플렉션(Reflection) & 심화 질문 (v2)
-- 이전 답변에 대한 **피드백/보완점**을 생성
-- 필요한 경우:
-  - 같은 주제에 대한 심화 질문
-  - 새로운 영역에 대한 질문
-- 을 자동으로 이어감
+### ✔ 4. Reflection(재평가)
+- 답변 길이 부족, 구체성 부족, 평가 모순 시 자동 재평가 수행  
+- re-evaluate 후 다음 단계 진행
 
-### ✔ 5. 최종 평가 리포트
-- 전체 면접 흐름을 요약
-- 강점 / 보완점 / 추천 포지션 등 텍스트 리포트 생성
+### ✔ 5. 심화 질문 생성
+- 벡터 기반 유사 질문 탐색  
+- 부족한 부분을 보완하도록 질문 설계  
+- fallback 예시질문 로직 포함
 
-### ✔ 6. Gradio UI (웹 데모)
-- 간단한 웹 화면에서:
-  - 이력서 입력
-  - 면접 진행
-  - 최종 리포트 확인
-- 까지 한 번에 경험할 수 있도록 구성 (v2 기준)
+### ✔ 6. 전략별 최종 평가 리포트
+- 전략별 섹션 요약  
+- 강점 / 약점 / 평가 경향  
+- 전체 종합 피드백 생성
+
+### ✔ 7. Gradio UI 지원
+- 이력서 업로드 → 면접 진행 → 보고서 출력  
+- 전체 과정을 웹에서 실행 가능
 
 ---
-
-## 🧩 폴더 구조
 
 ## 🧩 폴더 구조
 
 ```bash
 ai-interview-agent/
- └── src/
-      ├── graph/
-      │    ├── agent_v1.py   # v1 버전 Agent (기본 구조)
-      │    └── agent_v2.py   # v2 버전 Agent (고도화 버전)
-      │
-      ├── resume/            # (추후) 이력서 처리 모듈
-      ├── strategy/          # (추후) 전략 생성 모듈
-      ├── evaluation/        # (추후) 답변 평가 모듈
-      ├── generation/        # (추후) 질문 생성 모듈
-      └── ui/                # (추후) Gradio UI 모듈
-```
+└── src/
+     ├── resume/
+     │     └── resume_parser.py          # analyze_resume
+     │
+     ├── strategy/
+     │     └── strategy_generator.py      # generate_question_strategy
+     │
+     ├── evaluation/
+     │     └── evaluator.py               # evaluate / reflect / re_evaluate
+     │
+     ├── generation/
+     │     └── question_generator.py      # generate_question + summarize_interview + route functions
+     │
+     ├── decision/
+     │     └── decider.py                 # decide_next_step
+     │
+     └── graph/
+           └── agent_v2.py                # preProcessing + LangGraph 전체 파이프라인
 
----
+app.py                                      # Gradio UI
+run.py                                      # CLI 테스트용
+requirements.txt
+README.md
+
 
 ## ⚙️ 실행 방법 
-
-👉 아직 모듈로 완전히 나누지 않았기 때문에,  
-v2 스크립트를 직접 실행하는 방식으로 사용합니다.
 
 ### 1) 환경 변수 설정
 ```bash
@@ -88,21 +87,30 @@ setx OPENAI_API_KEY "api_key"
 pip install -r requirements.txt
 ```
 
-### 3) v2 Agent 실행
+### 3) CLI(터미널) 모드 실행
 ```bash
-python src/graph/agent_v2.py
+python run.py
+```
+
+### 4) Gradio Web UI 실행
+```bash
+python app.py
 ```
 
 ---
 
 ## 🧠 버전 설명
 
-**agent_v1.py**  
-- 기본적인 면접 플로우(질문 → 답변 → 평가)를 구현한 1차 버전
+v2.0 (현재 버전 / 최종본)
 
-**agent_v2.py**  
-- 전략별 질문 강화  
-- Reflection(답변 피드백) 추가  
-- 인터뷰 종료 조건 개선  
-- Gradio UI 연결  
-- 전체적으로 고도화된 버전
+질문 전략 딕셔너리 구조
+
+Evaluation + Reflection + Re-evaluate 체계
+
+LangGraph 기반 파이프라인
+
+심화 질문 생성 강화
+
+Gradio UI 추가
+
+전략별 섹션 기반 최종 보고서 자동 생성

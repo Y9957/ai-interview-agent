@@ -1,0 +1,11 @@
+openai
+langchain
+langchain-core
+langchain-community
+langchain-openai
+langgraph
+pydantic
+gradio
+python-dotenv
+tqdm
+requests

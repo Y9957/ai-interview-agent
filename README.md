@@ -68,7 +68,7 @@ app.py                                      # Gradio UI
 run.py                                      # CLI 테스트용
 requirements.txt
 README.md
-
+```
 
 ## ⚙️ 실행 방법 
 

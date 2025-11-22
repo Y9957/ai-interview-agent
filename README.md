@@ -62,6 +62,7 @@ ai-interview-agent/
       ├── evaluation/        # (추후) 답변 평가 모듈
       ├── generation/        # (추후) 질문 생성 모듈
       └── ui/                # (추후) Gradio UI 모듈
+...
 
 ⚙️ 실행 방법 
 

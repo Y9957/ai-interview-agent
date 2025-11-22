@@ -1,11 +1,28 @@
+# LLM / LangChain / LangGraph
 openai
 langchain
 langchain-core
 langchain-community
 langchain-openai
 langgraph
-pydantic
-gradio
-python-dotenv
+
+# embeddings / vector DB
+chromadb
+numpy
+scikit-learn    # chroma dependency 일부 환경에서 요구됨
+
+# document parsing
+python-docx
+PyMuPDF          # fitz
+
+# utilities
 tqdm
 requests
+python-dotenv
+
+# Web UI
+gradio
+
+# pydantic (LangChain dependency)
+pydantic
+pydantic-settings
